@@ -5,13 +5,49 @@
     <meta charset="UTF-8" />
     <title>Vue Task List Challenge</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"] {
+            padding: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            margin-left: 0.25rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .task-text {
+            display: inline-block;
+            min-width: 150px;
+        }
+    </style>
 </head>
 
 <body>
     <div id="app">
-        <h1> My Task List</h1>
+        <h1>My Task List</h1>
 
-        <input type="text" v-model="newTask" placeholder="Enter a task">
+        <input type="text" v-model="newTask" placeholder="Enter a task" />
         <button @click="addTask">Add Task</button>
 
         <p v-if="tasks.length">Total tasks: {{ tasks.length }}</p>
@@ -19,9 +55,12 @@
 
         <ul>
             <li v-for="(task, index) in tasks" :key="index">
-                <span :class="{ done: task.done }" @click="toggleDone(index)">
+                <span class="task-text" :class="{ done: task.done }">
                     {{ task.text }}
                 </span>
+                <button @click="toggleDone(index)">
+                    {{ task.done ? 'Undo' : 'Mark Done' }}
+                </button>
                 <button @click="removeTask(index)">Delete</button>
             </li>
         </ul>
@@ -34,20 +73,18 @@
             data() {
                 return {
                     newTask: '',
-                    tasks: [] // Each task will be an object: { text: 'Buy milk', done: false }
+                    tasks: [] // { text: 'Do something', done: false }
                 };
             },
             methods: {
                 addTask() {
-                    if (this.newTask.trim() === '') {
-                        alert('Please enter a task');
-                        return;
+                    if (this.newTask.trim() !== '') {
+                        this.tasks.push({
+                            text: this.newTask.trim(),
+                            done: false
+                        });
+                        this.newTask = '';
                     }
-                    this.tasks.push({
-                        text: this.newTask.trim(),
-                        done: false
-                    });
-                    this.newTask = '';
                 },
                 removeTask(index) {
                     this.tasks.splice(index, 1);
@@ -58,23 +95,6 @@
             }
         }).mount('#app');
     </script>
-    <style>
-        .done {
-            text-decoration: line-through;
-            color: gray;
-        }
-
-        li span {
-            cursor: pointer;
-            display: inline-block;
-            padding: 4px 8px;
-        }
-
-        li span:hover {
-            background-color: #f0f0f0;
-            border-radius: 4px;
-        }
-    </style>
 </body>
 
 </html>
