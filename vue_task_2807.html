@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Vue Task List Challenge</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1> My Task List</h1>
+
+        <input type="text" v-model="newTask" placeholder="Enter a task">
+        <button @click="addTask">Add Task</button>
+
+        <p v-if="tasks.length">Total tasks: {{ tasks.length }}</p>
+        <p v-else>No tasks yet.</p>
+
+        <ul>
+            <li v-for="(task, index) in tasks" :key="index">
+                {{ task }}
+                <button @click="removeTask(index)">Delete</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    newTask: '',
+                    tasks: []
+                };
+            },
+            methods: {
+                addTask() {
+                    if (this.newTask.trim() === '') {
+                        alert('Please enter a task');
+                        return;
+                    }
+                    this.tasks.push(this.newTask.trim());
+                    this.newTask = '';
+                },
+                removeTask(index) {
+                    this.tasks.splice(index, 1);
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

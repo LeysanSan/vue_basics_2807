@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Vue List Rendering</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>My Tasks</h1>
+        <ul>
+            <li v-for="task in tasks" :key="task.id">
+                {{ task.text }}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    tasks: [
+                        { id: 1, text: 'Learn Vue basics' },
+                        { id: 2, text: 'Practice Laravel pagination' },
+                        { id: 3, text: 'Prepare for tomorrow’s Axios session' }
+                    ]
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
