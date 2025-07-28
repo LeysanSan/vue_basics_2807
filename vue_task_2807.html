@@ -19,7 +19,9 @@
 
         <ul>
             <li v-for="(task, index) in tasks" :key="index">
-                {{ task }}
+                <span :class="{ done: task.done }" @click="toggleDone(index)">
+                    {{ task.text }}
+                </span>
                 <button @click="removeTask(index)">Delete</button>
             </li>
         </ul>
@@ -32,7 +34,7 @@
             data() {
                 return {
                     newTask: '',
-                    tasks: []
+                    tasks: [] // Each task will be an object: { text: 'Buy milk', done: false }
                 };
             },
             methods: {
@@ -41,15 +43,38 @@
                         alert('Please enter a task');
                         return;
                     }
-                    this.tasks.push(this.newTask.trim());
+                    this.tasks.push({
+                        text: this.newTask.trim(),
+                        done: false
+                    });
                     this.newTask = '';
                 },
                 removeTask(index) {
                     this.tasks.splice(index, 1);
+                },
+                toggleDone(index) {
+                    this.tasks[index].done = !this.tasks[index].done;
                 }
             }
         }).mount('#app');
     </script>
+    <style>
+        .done {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        li span {
+            cursor: pointer;
+            display: inline-block;
+            padding: 4px 8px;
+        }
+
+        li span:hover {
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+    </style>
 </body>
 
 </html>
